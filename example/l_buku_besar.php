@@ -11,13 +11,13 @@ $acc = new Accounting($con);
 $acc->setTglSatu($tgl1);
 $acc->setTglDua($tgl2);
 
-/* -- Ini Hanya Contoh Nama dan Kode Akun Menggunakan Bank (10102) -> Lihat di Data COA -> M_D = M (Gak Bisa Dijurnal)
-	  Opsi Lain Dapat Menggunakan Pilihan Combobox 
-	  atau Menggunakan Perulangan untuk mentotal semua history transaksi akun 
-	  ---- */	
-	  
-$nmakun   = "Bank";
-$kodeakun = "10102";
+	/* -- Ini Hanya Contoh Nama dan Kode Akun Menggunakan Bank (10102) -> Lihat di Data COA -> M_D = M (Gak Bisa Dijurnal)
+		  Opsi Lain Dapat Menggunakan Pilihan Combobox 
+		  atau Menggunakan Perulangan untuk mentotal semua history transaksi akun 
+		  ---- */	
+		  
+	$nmakun   = "Bank";
+	$kodeakun = "10102";
 
 	echo "Tanggal Awal : ".$tgl1;
 	echo "</br>";
