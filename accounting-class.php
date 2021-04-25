@@ -316,13 +316,13 @@ class Accounting{
 	
 	}
 	
-	private function getTglSatu(){
+	public function getTglSatu(){
 		
 		return $this->tgl_satu;
 		
 	}
 	
-	private function getTglDua(){
+	public function getTglDua(){
 		
 		return $this->tgl_dua;
 	}
