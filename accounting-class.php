@@ -19,14 +19,10 @@ class Accounting{
 	private $tgl_satu;
 	private $tgl_dua;
 	private $con;
-	private $output;
-	private $datax;
 
 	function __construct($con){
 		
 		$this->con 		= $con;
-		$this->output	= array();
-		$this->datax	= array();
 		
 	}
 	
@@ -63,69 +59,74 @@ class Accounting{
 		
 	}
 	
-	public function InsertSaldoAwal($tglsatu,$tgldua){
+	public function InsertSaldoAwal($tglsatu){
 		
 		$sql  	 = mysqli_query($this->con,'SELECT value_parameter as vparam FROM apps_setting WHERE parameter_name = "LABA_DITAHAN"');
 		$data 	 = mysqli_fetch_array($sql, MYSQLI_ASSOC);
 		$idcoalr = $data['vparam'];
-		
-		$sql  	 = mysqli_query($this->con,'SELECT acc.ID_TRANS, acc.TGL_TRANS, acc1.KD_COA as kd_coa, c.D_K, sum(DEBET) as debet, sum(KREDIT) as kredit 
+		$sawal   = 0;
+		$sakhir  = 0;
+		$laba    = 0;
+		$biaya   = 0;
+				
+		$sql2  	 = mysqli_query($this->con,'SELECT acc.ID_TRANS, acc.TGL_TRANS, acc1.KD_COA as kd_coa, c.D_K, sum(DEBET) as debet, sum(KREDIT) as kredit 
 											FROM jurnal acc, jurnal_d1 acc1, coa c 
 											WHERE acc.TGL_TRANS < "'.$tglsatu.'" AND acc.ID_TRANS = acc1.ID_TRANS AND 
 											acc1.KD_COA = c.KD_COA 
 											GROUP BY acc1.KD_COA 
 											ORDER BY acc.TGL_TRANS, acc.ID_TRANS');
  
-        if (mysqli_num_rows($sql) > 0){
- 
-			$sawal   = 0;
-			$sakhir  = 0;
-			$laba    = 0;
-			$biaya   = 0;
-			
-			while ($data = mysqli_fetch_assoc($sql)){
+			if (mysqli_num_rows($sql2) > 0){
 				
-				$idcoa = $data['kd_coa'];
-				$dk    = substr($idcoa,0,1);
-				$dbet  = $data['debet'];
-				$krdt  = $data['kredit'];
-				
-				if (($dk=="1") || ($dk=="5")){
+				while ($data2 = mysqli_fetch_assoc($sql2)){
 					
-					$sakhir = $sawal+$dbet-$krdt;
-				
-				} else if (($dk=="2") || ($dk=="3") || ($dk=="4")){
+					$idcoa = $data2['kd_coa'];
+					$dk    = substr($idcoa,0,1);
+					$dbet  = $data2['debet'];
+					$krdt  = $data2['kredit'];
 					
-					$sakhir = $sawal+$krdt-$dbet;
-				
+					if (($dk=="1") || ($dk=="5")){
+						
+						$sakhir = $sawal+$dbet-$krdt;
+					
+					} else if (($dk=="2") || ($dk=="3") || ($dk=="4")){
+						
+						$sakhir = $sawal+$krdt-$dbet;
+					
+					}
+					
+					mysqli_query($this->con,"update coa set saldo_awal = '".$sakhir."' where kd_coa = '".$idcoa."' and m_d = 'D'");
+					
 				}
-				
-				mysqli_query($this->con,"update coa set SALDO_AWAL = '".$sakhir."' where KD_COA = '".$idcoa."' and M_D = 'D'");
 				
 			}
 			
-			//update coa detail SHU Saldo Awal
-			$data = $this->Hitung_SHU_Saldo_Awal($tglsatu);
+			$datax = $this->Hitung_SHU_Saldo_Awal($tglsatu);
 			
-			if (count($data)>0){
+			if (count($datax)>0){
 			
-				for($i=0; $i<count($data); $i++){
+				for($i=0; $i<count($datax); $i++){
 					
-					$idcoa  = substr(@$data[$i]['KD_COA'],0,1);
-					$dbet   =  $data[$i]['DEBET'];
-					$krdt   = $data[$i]['KREDIT'];
+					if (array_key_exists('KD_COA',$datax[$i])){
+						
+						$idcoax  = substr($datax[$i]['KD_COA'],0,1);
+						
+						$dbet   = $datax[$i]['DEBET'];
+						$krdt   = $datax[$i]['KREDIT'];
+
+						if ($idcoax == '4'){ $laba  = $laba+$krdt-$dbet; }
+						if ($idcoax == '5'){ $biaya = $biaya+$dbet-$krdt; }
 					
-					if ($idcoa == '4'){ $laba  = $laba+$krdt-$dbet; }
-					if ($idcoa == '5'){ $biaya = $biaya+$dbet-$krdt; }
-					
+					}
 				}
-			}
-	 
-			$shu = $laba-$biaya;
+				
+				$shu = $laba-$biaya;
+
+				mysqli_query($this->con,"update coa set saldo_awal = '".$shu."' where kd_coa = '".$idcoalr."'");
 			
-			mysqli_query($this->con,"update coa set SALDO_AWAL = '".$shu."' where KD_COA = '".$idcoalr."'");
+			}			
 		
-		}
+		
 	}
 	
 	public function InsertDebetKredit($tglsatu,$tgldua){
@@ -143,7 +144,6 @@ class Accounting{
  
         if (mysqli_num_rows($sql) > 0){
 			
-			//update coa detail account Debet & Kredit
 			while ($data = mysqli_fetch_array($sql, MYSQLI_ASSOC)){
               
 				$idcoa = $data['kd_coa'];
@@ -154,7 +154,6 @@ class Accounting{
  
 			}
  
-          //update coa detail SHU Saldo Debet & Kredit
           $data = $this->Hitung_SHU_Debet_Kredit($tglsatu,$tgldua);
 		  
           $ddd   = $data[0]['DEBET'];
@@ -178,7 +177,6 @@ class Accounting{
 										    SUM(saldo_debet) as SD1, SUM(saldo_kredit) as SK1 
 										    FROM coa WHERE level_coa = "'.$xlvl.'" AND m_d = "D" 
 										    GROUP BY KD_INDUK_COA ORDER BY KD_COA');
-		$data 	 = mysqli_fetch_array($sql, MYSQLI_ASSOC);
 			
 			while ($data = mysqli_fetch_array($sql, MYSQLI_ASSOC)){
                     
@@ -208,7 +206,6 @@ class Accounting{
 											    SUM(saldo_debet) SD1, SUM(saldo_kredit) SK1 
 											    FROM coa WHERE level_coa = "'.$xlvl.'" AND m_d = "M" 
 											    GROUP BY KD_INDUK_COA ORDER BY KD_COA');
-			$data 	 = mysqli_fetch_array($sql, MYSQLI_ASSOC);
 			
 			while ($data = mysqli_fetch_array($sql, MYSQLI_ASSOC)){
 				
@@ -237,7 +234,6 @@ class Accounting{
 											FROM coa WHERE m_d = "D" 
 											GROUP BY SUBSTRING(KD_COA, 1,1) 
 											ORDER BY kd_coa');
-		$data 	 = mysqli_fetch_array($sql, MYSQLI_ASSOC);
     
         while ($data = mysqli_fetch_array($sql, MYSQLI_ASSOC)){
 			
@@ -252,7 +248,6 @@ class Accounting{
 		
 	}
 	
-	//PROSES INSERT SALDO AKHIR
 	public function CalcSaldoAkhir(){
 		
 		$sql  	 = mysqli_query($this->con,'select kd_coa, d_k, 
@@ -260,14 +255,11 @@ class Accounting{
 										    IF(d_k="D", saldo_awal+saldo_debet-saldo_kredit, 
 										    saldo_awal+saldo_kredit-saldo_debet) as saldo_akhir 
 										    from coa order by kd_coa');
-		$data 	 = mysqli_fetch_array($sql, MYSQLI_ASSOC);
     
         while ($data = mysqli_fetch_array($sql, MYSQLI_ASSOC)){
 			
 			$icoa  = $data['kd_coa'];
 			$sak   = $data['saldo_akhir'];
- 
-            $sak   = str_replace(",",".",$sak);
 			
 			mysqli_query($this->con,'update coa set saldo_akhir = "'.$sak.'" where kd_coa = "'.$icoa.'"');
 			
