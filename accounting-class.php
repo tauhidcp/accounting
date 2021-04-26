@@ -106,8 +106,6 @@ class Accounting{
 			if (count($datax)>0){
 			
 				for($i=0; $i<count($datax); $i++){
-					
-					if (array_key_exists('KD_COA',$datax[$i])){
 						
 						$idcoax  = substr($datax[$i]['KD_COA'],0,1);
 						
@@ -117,7 +115,6 @@ class Accounting{
 						if ($idcoax == '4'){ $laba  = $laba+$krdt-$dbet; }
 						if ($idcoax == '5'){ $biaya = $biaya+$dbet-$krdt; }
 					
-					}
 				}
 				
 				$shu = $laba-$biaya;
