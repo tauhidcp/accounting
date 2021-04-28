@@ -94,7 +94,6 @@
 		echo "Total Saldo Debet : ".$nddd."</br>";
 		echo "Total Saldo Kredit : ".$nkkk."</br>";
 		echo "Total Saldo Akhir : ".$nsak."</br>";
-		echo "----------------------------<br>";	
 		echo "<i>Profit : ".$nsak."</i><br>";	
 	   
 	   	/* 
@@ -167,7 +166,6 @@
 	  echo "Total Saldo Debet : ".$nddd."</br>";
 	  echo "Total Saldo Kredit : ".$nkkk."</br>";
 	  echo "Total Saldo Akhir : ".$nsak."</br>";
-	  echo "----------------------------<br>";
 	  echo "<i>Loss : ".$nsak."</i><br>";
       echo "</br>";
       echo "</br>";
