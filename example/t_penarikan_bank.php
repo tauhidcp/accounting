@@ -63,7 +63,7 @@ echo "<h3>Penarikan Bank</h3>";
 			  // Insert Modul Bank Trans
 			  $sqli = "insert modul_bank_trans (id, ID_BANK,
 					  TGL_TRANS, JENIS_TRANS, NOMINAL, URAIAN) 
-					  values ('".$idr."', '".$id_bank."', '".$tgl."', 'Setoran', '".$nnn."', '".$uraian."')";	  
+					  values ('".$idr."', '".$id_bank."', '".$tgl."', 'Penarikan', '".$nnn."', '".$uraian."')";	  
 			  $mbank = mysqli_query($con,$sqli);
 			  
 			  // Insert Jurnal Umum

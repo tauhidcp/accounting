@@ -19,6 +19,7 @@ class Accounting{
 	private $tgl_satu;
 	private $tgl_dua;
 	private $con;
+	private $datax = array();
 
 	function __construct($con){
 		
@@ -59,7 +60,7 @@ class Accounting{
 		
 	}
 	
-	public function InsertSaldoAwal($tglsatu){
+	public function InsertSaldoAwal($tgl){
 		
 		$sql  	 = mysqli_query($this->con,'SELECT value_parameter as vparam FROM apps_setting WHERE parameter_name = "LABA_DITAHAN"');
 		$data 	 = mysqli_fetch_array($sql, MYSQLI_ASSOC);
@@ -71,7 +72,7 @@ class Accounting{
 				
 		$sql2  	 = mysqli_query($this->con,'SELECT acc.ID_TRANS, acc.TGL_TRANS, acc1.KD_COA as kd_coa, c.D_K, sum(DEBET) as debet, sum(KREDIT) as kredit 
 											FROM jurnal acc, jurnal_d1 acc1, coa c 
-											WHERE acc.TGL_TRANS < "'.$tglsatu.'" AND acc.ID_TRANS = acc1.ID_TRANS AND 
+											WHERE acc.TGL_TRANS < "'.$tgl.'" AND acc.ID_TRANS = acc1.ID_TRANS AND 
 											acc1.KD_COA = c.KD_COA 
 											GROUP BY acc1.KD_COA 
 											ORDER BY acc.TGL_TRANS, acc.ID_TRANS');
@@ -101,16 +102,15 @@ class Accounting{
 				
 			}
 			
-			$datax = $this->Hitung_SHU_Saldo_Awal($tglsatu);
+			$this->datax = $this->Hitung_SHU_Saldo_Awal($tgl);
 			
-			if (count($datax)>0){
+			if (count($this->datax)>0){
 			
-				for($i=0; $i<count($datax); $i++){
+				for($i=0; $i<count($this->datax); $i++){
 						
-						$idcoax  = substr($datax[$i]['KD_COA'],0,1);
-						
-						$dbet   = $datax[$i]['DEBET'];
-						$krdt   = $datax[$i]['KREDIT'];
+						$idcoax  = substr($this->datax[$i]['KD_COA'],0,1);
+						$dbet   = $this->datax[$i]['DEBET'];
+						$krdt   = $this->datax[$i]['KREDIT'];
 
 						if ($idcoax == '4'){ $laba  = $laba+$krdt-$dbet; }
 						if ($idcoax == '5'){ $biaya = $biaya+$dbet-$krdt; }
@@ -151,10 +151,10 @@ class Accounting{
  
 			}
  
-          $data = $this->Hitung_SHU_Debet_Kredit($tglsatu,$tgldua);
+          $this->datax = $this->Hitung_SHU_Debet_Kredit($tglsatu,$tgldua);
 		  
-          $ddd   = $data[0]['DEBET'];
-          $kkk   = $data[0]['KREDIT'];
+          $ddd   = $this->datax[0]['DEBET'];
+          $kkk   = $this->datax[0]['KREDIT'];
           
 		  mysqli_query($this->con,'update coa set saldo_debet = "'.$ddd.'", saldo_kredit = "'.$ddd.'" where kd_coa = "'.$idcoalr.'"');
 

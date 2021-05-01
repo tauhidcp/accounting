@@ -3,7 +3,7 @@
 	require_once("connect.php");
 	require_once("../accounting-class.php");
 
-	$tgl2 = "30-04-2018";
+	$tgl2 = "30-05-2021";
 
 	$acc = new Accounting($con);
 

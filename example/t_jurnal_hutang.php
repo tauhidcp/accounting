@@ -10,7 +10,7 @@ Untuk Contoh yang lebih detail bisa meniru MODUL BANK
 dengan menyimpan data transaksi biaya pada tabel terpisah. 
 
 Kredit 20101 (Hutang Jangka Pendek)
-Debit 10102 (Bank)
+Debit 10101 (Kas)
 
 */
 
@@ -50,7 +50,7 @@ echo "<h3>Transaksi Hutang (Kewajiban)</h3>";
 			  
 			  $idr        = rand(701,800);
 			  $tgl        = date("Y-m-d", strtotime($_POST['tglx']));
-			  $icoa_	  = "10102"; // 10102 Debet (Bank)
+			  $icoa_	  = "10101"; // 10101 Debet (Kas)
 			  $icoa       = "20101"; // (Hutang) / Kredit
 			  $uraian     = "[Hutang] ".$_POST['namax'];
 			  $nnn        = $_POST['jmlx'];
