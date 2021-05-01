@@ -4,19 +4,17 @@ require_once("connect.php");
 
 /* 
 
-Transaksi Pembelian Barang
-Ini Hanya Contoh Sederhana, untuk melihat kas keluar
+Transaksi Beli ATK (Biaya)
+Ini Hanya Contoh Sederhana, untuk melihat pemrosesan biaya
 Untuk Contoh yang lebih detail bisa meniru MODUL BANK 
-dengan menyimpan data transaksi pembelian barang pada tabel terpisah. misal :
-1. t_barang 			= tabel untuk menyimpan informasi stok barang (penambahan)
-2. t_trans_pembelian 	= tabel untuk menyimpan informasi pembelian barang 
+dengan menyimpan data transaksi biaya pada tabel terpisah. 
 
-Debet 1010401 (Persediaan Barang)
 Kredit 10101 (Kas)
+Debit 50301 (Beli ATK)
 
 */
 
-echo "<h3>Pembelian Barang</h3>";
+echo "<h3>Beli ATK (Biaya)</h3>";
 ?>
 
 <!doctype html>
@@ -24,7 +22,7 @@ echo "<h3>Pembelian Barang</h3>";
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Transaksi Pembelian Barang</title>
+  <title>Transaksi Beli ATK (Biaya)</title>
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <link rel="stylesheet" href="/resources/demos/style.css">
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -50,11 +48,11 @@ echo "<h3>Pembelian Barang</h3>";
 	
 		if (isset($_POST['simpan'])){
 			  
-			  $idr        = rand(401,500);
+			  $idr        = rand(601,700);
 			  $tgl        = date("Y-m-d", strtotime($_POST['tglx']));
-			  $icoa_	  = "10101"; // 10101 Kredit (Kas) 
-			  $icoa       = "1010401"; // (Persediaan Barang) / Debet
-			  $uraian     = "[Beli Barang] ".$_POST['namax'];
+			  $icoa_	  = "50301"; // 50301 Debet (ATK)
+			  $icoa       = "10101"; // (Kas) / Kredit
+			  $uraian     = "[Beli ATK] ".$_POST['namax'];
 			  $nnn        = $_POST['jmlx'];
 			  $type       = 'JURNAL UMUM';
 			  
@@ -66,17 +64,17 @@ echo "<h3>Pembelian Barang</h3>";
 			  
 			  // Insert Jurnal D1
 			  $sqli = "insert into jurnal_d1 (ID_DETAIL, ID_TRANS, KD_COA, DEBET, KREDIT, KELOMPOK) values 
-					    ('', '".$idr."', '".$icoa."', '".$nnn."', '0', 'HARTA'),
-						('', '".$idr."', '".$icoa_."', '0', '".$nnn."', 'HARTA')";
+					    ('', '".$idr."', '".$icoa_."', '".$nnn."', '0', 'HARTA'),
+						('', '".$idr."', '".$icoa."', '0', '".$nnn."', 'HARTA')";
 			  $jurnald1 = mysqli_query($con,$sqli);	
 			  
 			   if (!$jurnal && !$jurnald1){
 				  
-				  echo "<b>Pembelian Barang Gagal Disimpan!</b>";
+				  echo "<b>Beli ATK Gagal Disimpan!</b>";
 			  
 			  } else {
 				  
-				 echo "<b>Pembelian Barang Berhasil Disimpan!</b>";
+				 echo "<b>Beli ATK Berhasil Disimpan!</b>";
 				 
 			  }
 			

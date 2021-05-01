@@ -50,7 +50,7 @@ echo "<h3>Penjualan Barang</h3>";
 	
 		if (isset($_POST['simpan'])){
 			  
-			  $idr        = rand(401,500);
+			  $idr        = rand(501,600);
 			  $tgl        = date("Y-m-d", strtotime($_POST['tglx']));
 			  $icoa_	  = "10101"; // 10101 Debet (Kas)
 			  $icoa       = "40101"; // (Pendapatan Penjualan) / Kredit
