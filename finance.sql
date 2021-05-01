@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 15, 2021 at 10:26 AM
+-- Generation Time: May 01, 2021 at 03:11 AM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 8.0.2
 
@@ -68,10 +68,10 @@ CREATE TABLE `coa` (
 
 INSERT INTO `coa` (`KD_COA`, `NAMA_COA`, `KD_INDUK_COA`, `KELOMPOK`, `M_D`, `D_K`, `LEVEL_COA`, `SALDO_AWAL`, `SALDO_DEBET`, `SALDO_KREDIT`, `SALDO_AKHIR`, `AKT_PSV`) VALUES
 ('', NULL, NULL, NULL, NULL, NULL, NULL, 0.00, 0.00, 0.00, 0.00, NULL),
-('1', 'AKTIVA', '0', 'HARTA', 'M', 'D', 0, 350074675.00, 10000000.00, 0.00, 360074675.00, 1),
-('101', 'Aktiva Lancar', '1', 'HARTA', 'M', 'D', 1, 14975000.00, 0.00, 0.00, 14975000.00, 1),
-('10101', 'Kas', '101', 'HARTA', 'D', 'D', 2, 14975000.00, 0.00, 0.00, 14975000.00, 1),
-('10102', 'Bank', '101', 'HARTA', 'D', 'D', 2, 305074675.00, 10000000.00, 0.00, 315074675.00, 1),
+('1', 'AKTIVA', '0', 'HARTA', 'M', 'D', 0, 350074675.00, 0.00, 0.00, 350074675.00, 1),
+('101', 'Aktiva Lancar', '1', 'HARTA', 'M', 'D', 1, 9975000.00, 0.00, 0.00, 9975000.00, 1),
+('10101', 'Kas', '101', 'HARTA', 'D', 'D', 2, 9975000.00, 0.00, 0.00, 9975000.00, 1),
+('10102', 'Bank', '101', 'HARTA', 'D', 'D', 2, 310074675.00, 0.00, 0.00, 310074675.00, 1),
 ('10103', 'Piutang', '101', 'HARTA', 'M', 'D', 2, 25000.00, 0.00, 0.00, 25000.00, 1),
 ('1010301', 'Piutang Umum', '10103', 'HARTA', 'D', 'D', 3, 25000.00, 0.00, 0.00, 25000.00, 1),
 ('1010302', 'Piutang Dagang', '10103', 'HARTA', 'D', 'D', 3, 0.00, 0.00, 0.00, 0.00, 1),
@@ -97,9 +97,9 @@ INSERT INTO `coa` (`KD_COA`, `NAMA_COA`, `KD_INDUK_COA`, `KELOMPOK`, `M_D`, `D_K
 ('202', 'Kewajian Lainnya', '2', 'KEWAJIBAN', 'D', 'K', 1, 0.00, 0.00, 0.00, 0.00, 2),
 ('203', 'Antar Kantor', '2', 'KEWAJIBAN', 'D', 'K', 1, 0.00, 0.00, 0.00, 0.00, 2),
 ('204', 'Passiva Lain-Lain', '2', 'KEWAJIBAN', 'D', 'K', 1, 0.00, 0.00, 0.00, 0.00, 2),
-('3', 'MODAL', '0', 'MODAL', 'M', 'K', 0, 250074675.00, 0.00, 10000000.00, 260074675.00, 2),
-('301', 'Saham', '3', 'MODAL', 'M', 'K', 1, 250000000.00, 0.00, 10000000.00, 260000000.00, 2),
-('30101', 'Saham Disetor', '301', 'MODAL', 'D', 'K', 2, 250000000.00, 0.00, 10000000.00, 260000000.00, 2),
+('3', 'MODAL', '0', 'MODAL', 'M', 'K', 0, 250074675.00, 0.00, 0.00, 250074675.00, 2),
+('301', 'Saham', '3', 'MODAL', 'M', 'K', 1, 250000000.00, 0.00, 0.00, 250000000.00, 2),
+('30101', 'Saham Disetor', '301', 'MODAL', 'D', 'K', 2, 250000000.00, 0.00, 0.00, 250000000.00, 2),
 ('30102', 'Saham Belum Disetor', '301', 'MODAL', 'D', 'K', 2, 0.00, 0.00, 0.00, 0.00, 2),
 ('302', 'Cadangan Umum', '3', 'MODAL', 'D', 'K', 1, 0.00, 0.00, 0.00, 0.00, 2),
 ('303', 'Laba Rugi', '3', 'MODAL', 'M', 'K', 1, 74675.00, 0.00, 0.00, 74675.00, 2),
@@ -253,7 +253,7 @@ CREATE TABLE `modul_bank_trans` (
   `TGL_TRANS` date DEFAULT NULL,
   `JENIS_TRANS` int(3) DEFAULT NULL,
   `NOMINAL` double(17,2) DEFAULT NULL,
-  `URAIAN` varchar(25) DEFAULT NULL
+  `URAIAN` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -317,7 +317,7 @@ ALTER TABLE `apps_setting`
 -- AUTO_INCREMENT for table `jurnal_d1`
 --
 ALTER TABLE `jurnal_d1`
-  MODIFY `ID_DETAIL` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `ID_DETAIL` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `modul_bank`

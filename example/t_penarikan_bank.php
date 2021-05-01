@@ -1,6 +1,6 @@
 <?php 
 
-#Penarikan Bank 
+#Transaksi Penarikan Bank 
 #Debet 10101 (Kas)
 #Kredit 10102 (Bank)
 
@@ -59,7 +59,8 @@ echo "<h3>Penarikan Bank</h3>";
 			  $uraian     = "[Penarikan Bank] ".$_POST['ketx'];
 			  $nnn        = $_POST['jmlx'];
 			  $type       = 'MODUL BANK';
-
+			  
+			  // Insert Modul Bank Trans
 			  $sqli = "insert modul_bank_trans (id, ID_BANK,
 					  TGL_TRANS, JENIS_TRANS, NOMINAL, URAIAN) 
 					  values ('".$idr."', '".$id_bank."', '".$tgl."', 'Setoran', '".$nnn."', '".$uraian."')";	  
@@ -73,11 +74,15 @@ echo "<h3>Penarikan Bank</h3>";
 			  
 			  // Insert Jurnal D1
 			  $sqli = "insert into jurnal_d1 (ID_DETAIL, ID_TRANS, KD_COA, DEBET, KREDIT, KELOMPOK) values 
-					    ('', '".$idr."', '".$icoa_bank."', '".$nnn."', '0', 'HARTA'),
-						('', '".$idr."', '".$icoa."', '0', '".$nnn."', 'HARTA')";
+					    ('', '".$idr."', '".$icoa."', '".$nnn."', '0', 'HARTA'),
+						('', '".$idr."', '".$icoa_bank."', '0', '".$nnn."', 'HARTA')";
 			  $jurnald1 = mysqli_query($con,$sqli);	
 			  
-			  if (!$jurnal && !$jurnald1 && !$mbank){
+			  // Update Saldo Modul Bank
+			  $sqli = "update modul_bank set SALDO_BANK=SALDO_BANK-'".$nnn."' where ID='".$id_bank."'";	  
+			  $usaldo = mysqli_query($con,$sqli);
+			  
+			   if (!$jurnal && !$jurnald1 && !$mbank && !$usaldo){
 				  
 				  echo "<b>Penarikan Gagal Disimpan!</b>";
 			  

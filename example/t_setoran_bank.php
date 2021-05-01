@@ -1,6 +1,6 @@
 <?php 
 
-#Setoran Bank
+#Transaksi Setoran Bank
 
 #Debet 30101 (Saham Disetor)
 #Kredit 10102 (Bank)
@@ -79,7 +79,11 @@ echo "<h3>Setoran Bank</h3>";
 						('', '".$idr."', '".$icoa."', '0', '".$nnn."', 'HARTA')";
 			  $jurnald1 = mysqli_query($con,$sqli);	
 			  
-			   if (!$jurnal && !$jurnald1 && !$mbank){
+			  // Update Saldo Modul Bank
+			  $sqli = "update modul_bank set SALDO_BANK=SALDO_BANK+'".$nnn."' where ID='".$id_bank."'";	  
+			  $usaldo = mysqli_query($con,$sqli);
+			  
+			   if (!$jurnal && !$jurnald1 && !$mbank && !$usaldo){
 				  
 				  echo "<b>Setoran Gagal Disimpan!</b>";
 			  

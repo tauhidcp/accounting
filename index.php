@@ -22,16 +22,16 @@
 			<ul>
 				<li><b>Jurnal Transaksi</b></br>
 					<ul>
-					<li><a href="example/t_jurnal_gaji.php" target="_blank">Bayar Gaji Bulanan</a></li>
-					<li><a href="example/t_jurnal_beli_atk.php" target="_blank">Beli ATK</a></li>
-					<li><a href="example/t_jurnal_jual_barang.php" target="_blank">Penjualan Barang</a></li>
-					<li><a href="example/t_jurnal_beli_barang.php" target="_blank">Pembelian Barang</a></li>
+					<li><a href="example/t_jurnal_hutang.php" target="_blank">Hutang (Kewajiban)</a></li>
+					<li><a href="example/t_jurnal_beli_atk.php" target="_blank">Beli ATK (Biaya)</a></li>
+					<li><a href="example/t_jurnal_jual_barang.php" target="_blank">Penjualan Barang (Pendapatan)</a></li>
+					<li><a href="example/t_jurnal_beli_barang.php" target="_blank">Pembelian Barang (Harta)</a></li>
 					</ul>
 				</li>
 				<li><b>Transaksi Bank</b></br>
 					<ul>
-					<li><a href="example/t_setoran_bank.php" target="_blank">Transaksi Setoran</a></li>
-					<li><a href="example/t_penarikan_bank.php" target="_blank">Transaksi Penarikan</a></li>
+					<li><a href="example/t_setoran_bank.php" target="_blank">Transaksi Setoran (Modal)</a></li>
+					<li><a href="example/t_penarikan_bank.php" target="_blank">Transaksi Penarikan (Harta)</a></li>
 					</ul>
 				</li>
 				<li><a href="example/t_arsip_jurnal.php" target="_blank">Arsip Jurnal</a></li>
